@@ -1,0 +1,5 @@
+/.gradle/
+/.idea/
+/ManifestAPI/mods/
+/ManifestAPI/build/
+/ManifestCLI/build/

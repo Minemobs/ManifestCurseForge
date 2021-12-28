@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'java-library'
+}
+
+group 'fr.minemobs'
+version '1.0.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+    // Publish sources and javadoc
+    withSourcesJar()
+    withJavadocJar()
+}
+
+repositories {
+    mavenCentral()
+    exclusiveContent {
+        forRepository {
+            maven {
+                url = uri("https://jitpack.io")
+            }
+        }
+        filter {
+            // Only use JitPack for the `gson-record-type-adapter-factory` library
+            includeModule("com.github.Marcono1234", "gson-record-type-adapter-factory")
+        }
+    }
+}
+
+dependencies {
+    implementation "com.github.Marcono1234:gson-record-type-adapter-factory:v0.1.0"
+    implementation 'com.google.code.gson:gson:2.8.9'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+test {
+    useJUnitPlatform()
+}
