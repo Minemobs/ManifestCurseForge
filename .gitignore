@@ -3,3 +3,6 @@
 /ManifestAPI/mods/
 /ManifestAPI/build/
 /ManifestCLI/build/
+/manifestCLI/manifest.json
+/manifestCLI/mods/
+/build/

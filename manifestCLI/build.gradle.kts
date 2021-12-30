@@ -8,7 +8,7 @@ group = "fr.minemobs"
 version = "1.0.0-SNAPSHOT"
 
 application {
-    mainClass.set("${group}.manifestcli.ManifestCLI")
+    mainClass.set("${group}.manifestcli.ManifestCLIKt")
 }
 
 java {

@@ -16,12 +16,15 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ManifestAPI {
 
     private final File manifest;
     private final File folder;
     private static final Gson gson = new GsonBuilder().serializeNulls().registerTypeAdapterFactory(RecordTypeAdapterFactory.DEFAULT).create();
+    private static final Logger LOGGER = Logger.getLogger("manifest");
 
     /**
      *
@@ -57,7 +60,8 @@ public class ManifestAPI {
         JsonObject mod = getMod(projectID, versionID);
         String fileName = URLEncoder.encode(mod.get("fileName").getAsString(), StandardCharsets.UTF_8).replace("+", "%20");
         return String.join("/",
-                Arrays.copyOf(mod.get("downloadUrl").getAsString().split("/"), mod.get("downloadUrl").getAsString().split("/").length -1)) + "/" + fileName;
+                Arrays.copyOf(mod.get("downloadUrl").getAsString().split("/"),
+                        mod.get("downloadUrl").getAsString().split("/").length -1)) + "/" + fileName;
     }
 
     public void downloadMod(Project project) throws IOException {
@@ -65,7 +69,7 @@ public class ManifestAPI {
         String fileName = getModName(project);
         File output = new File(folder, fileName);
         if(output.exists()) {
-            System.out.println(fileName + " already exists, skipping");
+            LOGGER.log(Level.WARNING, () -> fileName + " already exists, skipping");
             return;
         }
         try(InputStream stream = url.openStream()) {
@@ -85,18 +89,11 @@ public class ManifestAPI {
         return gson.fromJson(getManifest().getAsJsonObject("minecraft").getAsJsonArray("modLoaders"), ModLoader[].class);
     }
 
-    /**
-     * @deprecated Not implemented yet.
-     * @since 1.0.0
-     */
-    @Deprecated(forRemoval = false, since = "1.0.0")
-    public void downloadModLoader() throws IOException {
-        JsonObject mc = gson.fromJson(Files.newBufferedReader(manifest.toPath()), JsonObject.class).get("minecraft").getAsJsonObject();
-        String version = mc.get("version").getAsString();
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
     private File getFileOrDefault(String fileName, File defaultFile) {
         return fileName == null || !new File(fileName).exists() ? defaultFile : new File(fileName);
+    }
+
+    public static Logger getLogger() {
+        return LOGGER;
     }
 }
