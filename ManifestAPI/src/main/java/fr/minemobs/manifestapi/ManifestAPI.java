@@ -42,6 +42,15 @@ public class ManifestAPI {
         this.manifest = manifestFile;
     }
 
+    public ManifestAPI(File folder, File manifest) {
+        this.folder = folder;
+        if(!this.folder.exists()) this.folder.mkdir();
+        if(!manifest.exists()) {
+            throw new IllegalArgumentException("Manifest file doesn't exist");
+        }
+        this.manifest = manifest;
+    }
+
     public Project[] getMods() throws IOException {
         JsonArray files = gson.fromJson(Files.newBufferedReader(manifest.toPath()), JsonObject.class).get("files").getAsJsonArray();
         return gson.fromJson(files, Project[].class);
