@@ -43,5 +43,5 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("commons-cli:commons-cli:1.5.0")
     implementation("com.github.Marcono1234:gson-record-type-adapter-factory:v0.1.0")
-    implementation(project(":ManifestAPI"))
+    implementation(project(":manifestapi"))
 }
